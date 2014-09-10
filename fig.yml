@@ -1,0 +1,26 @@
+master:
+  build: ./5.5
+  ports:
+    - "3306:3306"
+  environment:
+    MYSQL_USER: username
+    MYSQL_PASS: password
+    MYSQL_DATABASE: mydatabase
+    MYSQL_SERVER_ID: 1
+    MYSQL_REPLICATION_USER: replecation
+    MYSQL_REPLICATION_PASS: password
+slave:
+  build: ./5.5
+  command: "/bin/bash -c 'sleep 10 && ./run.sh'"
+  ports:
+    - "3307:3306"
+  environment:
+    MYSQL_USER: username
+    MYSQL_PASS: password
+    MYSQL_DATABASE: mydatabase
+    MYSQL_SERVER_ID: 2
+    MYSQL_REPLICATION_USER: replecation
+    MYSQL_REPLICATION_PASS: password
+    MYSQL_MASTER_HOST: master_1
+  links:
+    - master
